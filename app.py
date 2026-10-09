@@ -14,21 +14,25 @@ st.set_page_config(
 )
 
 # ── Visual system ────────────────────────────────────────────────────────────
-BG = "#0B110D"
-PANEL = "#151F18"
-PANEL_2 = "#202D22"
-TEXT = "#F5F3E8"
-MUTED = "#A6B39B"
-# Warm botanical palette: leaf green, citrus yellow, orange, and terracotta.
-CYAN = "#8BCF55"       # retained variable name for compatibility; now leaf green
-VIOLET = "#FF9F43"     # retained variable name; now vivid orange
-PINK = "#E76F51"       # retained variable name; now terracotta
-LIME = "#B6E36B"
-AMBER = "#FFD166"
-RED = "#F26B4F"
-
-TIER_COLORS = {"Low": RED, "Medium": AMBER, "High": LIME}
-MODEL_COLORS = {"SVM": CYAN, "MLP": VIOLET, "NaiveBayes": PINK}
+# True black canvas with a vivid, full-spectrum neon palette.
+BG = "#050505"
+PANEL = "#111111"
+PANEL_2 = "#1A1A1A"
+TEXT = "#F8F8F8"
+MUTED = "#B7B7C2"
+CYAN = "#00E5FF"
+VIOLET = "#B967FF"
+PINK = "#FF3CAC"
+LIME = "#A8FF00"
+AMBER = "#FFE600"
+RED = "#FF4D4D"
+ORANGE = "#FF8A00"
+GREEN = "#00F5A0"
+BLUE = "#3D5AFE"
+TEAL = "#00C2A8"
+RAINBOW = [PINK, CYAN, AMBER, LIME, ORANGE, VIOLET, GREEN, RED, BLUE, TEAL]
+TIER_COLORS = {"Low": RED, "Medium": AMBER, "High": GREEN}
+MODEL_COLORS = {"SVM": CYAN, "MLP": PINK, "NaiveBayes": AMBER}
 CHART_TEMPLATE = "plotly_dark"
 
 st.markdown(
@@ -43,23 +47,23 @@ st.markdown(
     }}
     .stApp {{
         background:
-            radial-gradient(ellipse at 12% 0%, rgba(139,207,85,.13), transparent 34%),
-            radial-gradient(ellipse at 90% 8%, rgba(255,159,67,.12), transparent 30%),
+            radial-gradient(ellipse at 12% 0%, rgba(0,229,255,.10), transparent 34%),
+            radial-gradient(ellipse at 90% 8%, rgba(255,60,172,.10), transparent 30%),
             {BG};
         color: {TEXT};
     }}
     [data-testid="stHeader"] {{ background: rgba(11,17,13,.92); }}
     [data-testid="stSidebar"] {{
-        background: linear-gradient(180deg, #17251A 0%, #0B110D 100%);
-        border-right: 1px solid rgba(182,227,107,.20);
+        background: linear-gradient(180deg, #101010 0%, #050505 100%);
+        border-right: 1px solid rgba(0,229,255,.28);
     }}
     [data-testid="stSidebar"] > div {{ padding-top: 1.3rem; }}
     h1, h2, h3, h4, p, label, .stMarkdown {{ color: {TEXT}; }}
     h1 {{ letter-spacing: -0.04em; }}
     h2, h3 {{ letter-spacing: -0.025em; }}
     [data-testid="stMetric"] {{
-        background: linear-gradient(145deg, rgba(32,45,34,.98), rgba(21,31,24,.98));
-        border: 1px solid rgba(182,227,107,.22);
+        background: linear-gradient(145deg, rgba(24,24,24,.98), rgba(10,10,10,.98));
+        border: 1px solid rgba(255,60,172,.30);
         border-radius: 18px;
         padding: 18px 20px;
         box-shadow: 0 10px 32px rgba(0,0,0,.12);
@@ -67,21 +71,21 @@ st.markdown(
     [data-testid="stMetricLabel"] {{ color: {MUTED}; }}
     [data-testid="stMetricValue"] {{ color: {TEXT}; }}
     div[data-testid="stPlotlyChart"] {{
-        background: rgba(21,31,24,.82);
-        border: 1px solid rgba(182,227,107,.16);
+        background: rgba(12,12,12,.92);
+        border: 1px solid rgba(255,230,0,.22);
         border-radius: 18px;
         padding: 8px;
     }}
     div[data-testid="stDataFrame"], div[data-testid="stTable"] {{
-        border: 1px solid rgba(182,227,107,.18);
+        border: 1px solid rgba(0,245,160,.22);
         border-radius: 14px;
         overflow: hidden;
     }}
     .hero {{
         padding: 1.55rem 1.7rem;
         border-radius: 24px;
-        background: linear-gradient(120deg, rgba(139,207,85,.14), rgba(255,159,67,.13) 54%, rgba(255,209,102,.09));
-        border: 1px solid rgba(255,209,102,.22);
+        background: linear-gradient(120deg, rgba(0,229,255,.14), rgba(255,60,172,.12) 36%, rgba(255,138,0,.12) 68%, rgba(168,255,0,.08));
+        border: 1px solid rgba(185,103,255,.35);
         margin-bottom: 1.15rem;
     }}
     .eyebrow {{
@@ -98,15 +102,15 @@ st.markdown(
         padding: .25rem .65rem;
         margin: .2rem .25rem .2rem 0;
         border-radius: 999px;
-        border: 1px solid rgba(139,207,85,.38);
+        border: 1px solid rgba(0,229,255,.48);
         color: {CYAN};
-        background: rgba(139,207,85,.10);
+        background: rgba(0,229,255,.10);
         font-size: .78rem;
     }}
     .section-note {{ color: {MUTED}; font-size: .9rem; }}
     .stButton > button[kind="primary"] {{
         background: linear-gradient(100deg, {LIME}, {AMBER}, {VIOLET});
-        color: #07101E;
+        color: #050505;
         border: 0;
         border-radius: 12px;
         font-weight: 800;
@@ -116,7 +120,7 @@ st.markdown(
         border-radius: 12px;
     }}
     div[data-testid="stRadio"] label {{ color: {TEXT}; }}
-    hr {{ border-color: rgba(182,227,107,.18); }}
+    hr {{ border-color: rgba(0,245,160,.22); }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -239,8 +243,8 @@ def apply_dark_layout(fig, height=None, **kwargs):
     )
     if height:
         fig.update_layout(height=height)
-    fig.update_xaxes(gridcolor="rgba(182,227,107,.13)", zerolinecolor="rgba(255,209,102,.22)")
-    fig.update_yaxes(gridcolor="rgba(182,227,107,.13)", zerolinecolor="rgba(255,209,102,.22)")
+    fig.update_xaxes(gridcolor="rgba(61,90,254,.24)", zerolinecolor="rgba(185,103,255,.35)")
+    fig.update_yaxes(gridcolor="rgba(61,90,254,.24)", zerolinecolor="rgba(185,103,255,.35)")
     return fig
 
 
@@ -334,7 +338,7 @@ if page == "🌌 Overview":
                     values=counts.values,
                     hole=.68,
                     sort=False,
-                    marker=dict(colors=[TIER_COLORS.get(x, VIOLET) for x in counts.index],
+                    marker=dict(colors=[TIER_COLORS.get(x, RAINBOW[i % len(RAINBOW)]) for i, x in enumerate(counts.index)],
                                 line=dict(color=BG, width=4)),
                     textinfo="label+percent",
                     hovertemplate="%{label}: %{value} wines<extra></extra>",
@@ -351,7 +355,7 @@ if page == "🌌 Overview":
         corr = numeric_df.corr(numeric_only=True)
         fig = px.imshow(
             corr, text_auto=".2f", aspect="auto",
-            color_continuous_scale=[[0, "#D95D39"], [.5, "#F4E8C1"], [1, "#2F7D32"]],
+            color_continuous_scale=[[0, BLUE], [.18, CYAN], [.36, GREEN], [.54, AMBER], [.72, ORANGE], [.86, PINK], [1, VIOLET]],
             zmin=-1, zmax=1,
         )
         apply_dark_layout(fig, height=max(470, 28 * len(corr.columns)), title="Correlation constellation")
@@ -419,7 +423,7 @@ elif page == "⚔️ Model Arena":
         cm = np.asarray(conf_matrices[selected_cm])
         fig = px.imshow(
             cm, text_auto=True, x=class_names, y=class_names, aspect="auto",
-            color_continuous_scale=[[0, PANEL], [.35, "#2F7D32"], [.68, AMBER], [1, VIOLET]],
+            color_continuous_scale=[[0, PANEL], [.18, BLUE], [.36, CYAN], [.54, GREEN], [.70, AMBER], [.85, ORANGE], [1, PINK]],
         )
         apply_dark_layout(fig, height=420, title=f"{selected_cm} · actual vs predicted")
         fig.update_xaxes(title="Predicted class")
@@ -457,7 +461,7 @@ elif page == "🧠 SHAP Explainability":
     })
     fig = px.bar(
         importance_df, x="Mean |SHAP|", y="Feature", orientation="h",
-        color="Mean |SHAP|", color_continuous_scale=[[0, PANEL_2], [.35, "#2F7D32"], [.68, AMBER], [1, VIOLET]],
+        color="Mean |SHAP|", color_continuous_scale=[[0, PANEL_2], [.16, BLUE], [.32, CYAN], [.48, GREEN], [.64, AMBER], [.80, ORANGE], [1, PINK]],
     )
     apply_dark_layout(fig, height=max(430, n_features * 28), title=f"{model_for_shap} · global importance")
     fig.update_layout(coloraxis_showscale=False)
@@ -478,7 +482,7 @@ elif page == "🧠 SHAP Explainability":
     bee_df = pd.DataFrame(rows)
     fig = px.scatter(
         bee_df, x="SHAP value", y="y", color="Feature value",
-        color_continuous_scale=[[0, "#2F7D32"], [.5, AMBER], [1, VIOLET]],
+        color_continuous_scale=[[0, BLUE], [.2, CYAN], [.4, GREEN], [.6, AMBER], [.8, ORANGE], [1, PINK]],
         hover_data={"Feature": True, "Feature value": ":.3f", "y": False},
     )
     fig.update_yaxes(tickmode="array", tickvals=list(range(len(order_idx))),
@@ -500,7 +504,7 @@ elif page == "🧠 SHAP Explainability":
     if abs(other) > 1e-6:
         labels.append("Remaining features")
         values.append(other)
-    colors = [CYAN if value >= 0 else PINK for value in values]
+    colors = [GREEN if value >= 0 else PINK for value in values]
     running = [base_value]
     for value in values:
         running.append(running[-1] + value)
@@ -510,7 +514,7 @@ elif page == "🧠 SHAP Explainability":
         end = running[i + 1]
         fig.add_trace(go.Bar(
             x=[label], y=[abs(value)], base=[min(start, end)],
-            marker_color=CYAN if value >= 0 else PINK,
+            marker_color=GREEN if value >= 0 else PINK,
             name="Pushes output up" if value >= 0 else "Pushes output down",
             showlegend=(i == 0 or i == next((j for j, v in enumerate(values) if v < 0), -1)),
             hovertemplate=f"{label}<br>Contribution: {value:+.4f}<extra></extra>",
@@ -669,7 +673,7 @@ elif page == "🧪 What-If Lab":
             x=alcohol_grid,
             y=volatile_grid,
             z=z,
-            colorscale=[[0, "#203C25"], [.22, "#3E8E41"], [.43, "#8BCF55"], [.64, "#FFD166"], [.82, "#FF9F43"], [1, "#D95D39"]],
+            colorscale=[[0, BLUE], [.16, CYAN], [.32, GREEN], [.48, LIME], [.62, AMBER], [.76, ORANGE], [.88, PINK], [1, VIOLET]],
             contours=dict(showlabels=True, labelfont=dict(color=TEXT, size=10), coloring="heatmap"),
             colorbar=dict(title="High tier<br>prob. (%)", ticksuffix="%"),
             hovertemplate="Alcohol: %{x:.2f}<br>Volatile acidity: %{y:.3f}<br>High-tier probability: %{z:.1f}%<extra></extra>",
@@ -744,7 +748,7 @@ elif page == "🧬 Wine Fingerprint":
         fill="toself",
         name=f"Sample #{sample_choice + 1}",
         line=dict(color=CYAN, width=3),
-        fillcolor="rgba(139,207,85,.20)",
+        fillcolor="rgba(0,229,255,.20)",
         hovertemplate="%{theta}<br>Normalized level: %{r:.2f}<extra>Selected wine</extra>",
     ))
     fig.add_trace(go.Scatterpolar(
@@ -752,8 +756,8 @@ elif page == "🧬 Wine Fingerprint":
         theta=profile_features + [profile_features[0]],
         fill="toself",
         name="High-tier average",
-        line=dict(color=PINK, width=3, dash="dot"),
-        fillcolor="rgba(255,159,67,.16)",
+        line=dict(color=ORANGE, width=3, dash="dot"),
+        fillcolor="rgba(255,138,0,.18)",
         hovertemplate="%{theta}<br>Normalized level: %{r:.2f}<extra>High-tier average</extra>",
     ))
     fig.update_layout(
@@ -765,8 +769,8 @@ elif page == "🧬 Wine Fingerprint":
         title="Normalized chemical fingerprint",
         polar=dict(
             bgcolor="rgba(0,0,0,0)",
-            radialaxis=dict(visible=True, range=[0, 1], gridcolor="rgba(182,227,107,.20)", tickfont=dict(color=MUTED)),
-            angularaxis=dict(gridcolor="rgba(182,227,107,.20)", tickfont=dict(color=TEXT)),
+            radialaxis=dict(visible=True, range=[0, 1], gridcolor="rgba(0,229,255,.28)", tickfont=dict(color=MUTED)),
+            angularaxis=dict(gridcolor="rgba(0,229,255,.28)", tickfont=dict(color=TEXT)),
         ),
         legend=dict(bgcolor="rgba(0,0,0,0)"),
         margin=dict(l=45, r=45, t=70, b=35),
