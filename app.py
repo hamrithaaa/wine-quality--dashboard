@@ -784,3 +784,18 @@ elif page == "🧬 Wine Fingerprint":
     c2.metric("High-tier reference size", f"{high_count:,} wines")
     c3.metric("Features on fingerprint", len(profile_features))
     st.caption("Radar values are min–max normalized against the full dataset so features with different units can be compared. This chart compares profiles; it does not itself predict quality.")
+from sklearn.metrics import accuracy_score, f1_score
+
+models = {
+    "SVM": svm_model,
+    "MLP": mlp_model,
+    "Naive Bayes": nb_model
+}
+
+for name, model in models.items():
+    y_pred = model.predict(X_test)
+
+    print(f"{name}")
+    print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
+    print(f"F1 (macro): {f1_score(y_test, y_pred, average='macro'):.4f}")
+    print(f"F1 (weighted): {f1_score(y_test, y_pred, average='weighted'):.4f}")
